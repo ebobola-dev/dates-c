@@ -16,6 +16,7 @@ int maxDaysInMonth(int, int);
 int dateIsCorrect(int, int, int);
 void printDate(date);
 date addDays(date, int);
+date subtractDays(date, int);
 
 const int maxDaysArr[12] = {
 	31, 28, 31, 30,
@@ -77,7 +78,7 @@ int main() {
 			}
 		} while (enterCount < 1);
 
-		userDate = addDays(userDate, addedDays);
+		userDate = addedDays >= 0 ? addDays(userDate, addedDays) : subtractDays(userDate, addedDays);
 		printf("Новая дата: ");
 		printDate(userDate);
 		printf("\n");
@@ -117,7 +118,11 @@ date addDays(date _date, int addedDays) {
 			// Если пора прибавлять года
 			if (_date.month + 1 > 12) {
 				_date.month = 1;
-				_date.year++;
+				_date.BC ? _date.year-- : _date.year++;
+				if (_date.year == 0) {
+					_date.year = 1;
+					_date.BC = 0;
+				}
 				_date.isLeap = isLeapYear(_date.year); // Это просто для красоты
 			}
 			else {
@@ -127,6 +132,31 @@ date addDays(date _date, int addedDays) {
 			_date.day = 1;
 		}
 		else _date.day++;
+	}
+	return _date;
+}
+
+date subtractDays(date _date, int subtractedDays) {
+	for (int i = -subtractedDays; i > 0; i--) {
+		// Если пора прибавлять месяцы
+		if (_date.day - 1 < 1) {
+			// Если пора прибавлять года
+			if (_date.month - 1 < 1) {
+				_date.month = 12;
+				_date.BC ? _date.year++ : _date.year--;
+				if (_date.year == 0) {
+					_date.year = 1;
+					_date.BC = 1;
+				}
+				_date.isLeap = isLeapYear(_date.year); // Это просто для красоты
+			}
+			else {
+				_date.month--;
+				_date.maxDays = maxDaysInMonth(_date.month, _date.year);
+			}
+			_date.day = _date.maxDays;
+		}
+		else _date.day--;
 	}
 	return _date;
 }
