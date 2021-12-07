@@ -22,7 +22,14 @@ const int maxDaysArr[12] = {
 	31, 28, 31, 30,
 	31, 30, 31, 31,
 	30, 31, 30, 31
-};	
+};
+
+const char* monthsRU[12] = {
+	"Января", "Февраля", "Марта",
+	"Апреля", "Май", "Июня",
+	"Июля", "Августа", "Сентября",
+	"Октября", "Ноября", "Декабря",
+};
 
 int main() {
 	setlocale(LC_ALL, "Rus");
@@ -35,7 +42,7 @@ int main() {
 		tempDate[2] = 0;
 		// Ввод даты
 		do {
-			printf("Введите дату(Пример: 12 12 2020): ");
+			printf("Введите дату(Пример: 31 12 2020): ");
 			enterCount = scanf_s("%d%d%d", &tempDate[0], &tempDate[1], &tempDate[2]);
 			while (trash = getchar() != '\n');
 			if (enterCount < 3) {
@@ -48,7 +55,7 @@ int main() {
 			system("cls");
 			printf("Некорректная дата\nПопробуйте заново\n");
 			do {
-				printf("Введите дату(Пример: 12 12 2020): ");
+				printf("Введите дату(Пример: 31 12 2020): ");
 				enterCount = scanf_s("%d%d%d", &tempDate[0], &tempDate[1], &tempDate[2]);
 				while (trash = getchar() != '\n');
 				if (enterCount < 3) printf("Вводите только числа\n");
@@ -70,7 +77,7 @@ int main() {
 		
 		// Ввод прибавляемых дней
 		do {
-			printf("Введите кол-во дней, которые нужно прибавить: ");
+			printf("\nВведите кол-во дней, которые нужно прибавить: ");
 			enterCount = scanf_s("%d", &addedDays);
 			while (trash = getchar() != '\n');
 			if (enterCount < 1) {
@@ -107,7 +114,7 @@ int dateIsCorrect(int days, int month, int year) {
 }
 
 void printDate(date _date) {
-	printf("%d.%d.%d", _date.day, _date.month, _date.year);
+	printf("%d %s %dг.", _date.day, monthsRU[_date.month - 1], _date.year);
 	if (_date.BC) printf(" до н.э");
 }
 
